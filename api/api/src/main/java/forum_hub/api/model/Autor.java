@@ -11,10 +11,7 @@ public class Autor {
     private String email;
     private String nome;
 
-    // Construtor padrão
-    public Autor() {}
 
-    // Construtor com parâmetros
     public Autor(String nome, String email) {
         this.nome = nome;
         this.email = email;

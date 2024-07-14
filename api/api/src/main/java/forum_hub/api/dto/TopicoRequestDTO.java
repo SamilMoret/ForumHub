@@ -1,12 +1,15 @@
 package forum_hub.api.dto;
 
+import jakarta.validation.constraints.NotNull;
+
 import java.time.LocalDateTime;
 
 public record TopicoRequestDTO(
-        Long autor_id,
-        Long curso_id,
-        LocalDateTime data_criacao,
-        Long estado_id,
-        String mensagem,
-        String titulo
-) {}
+        @NotNull String titulo,
+        @NotNull String mensagem,
+        @NotNull Long autor_id,
+        @NotNull Long curso_id,
+        @NotNull Long estado_id,
+        LocalDateTime data_criacao) {
+}
+
