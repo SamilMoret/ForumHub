@@ -7,8 +7,37 @@ import jakarta.persistence.Id;
 
 
 @Entity
-public record Estado(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY) Long id,
-        String descricao
-) {}
+public class Estado {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String descricao;
+
+    // Construtor vazio e construtor com parâmetros
+    public Estado() {
+    }
+
+    public Estado(String descricao) {
+        this.descricao = descricao;
+    }
+
+    // Getters e Setters
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+}
 

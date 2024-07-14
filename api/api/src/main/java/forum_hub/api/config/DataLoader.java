@@ -1,28 +1,49 @@
 package forum_hub.api.config;
 
-import forum_hub.api.model.*;
-import forum_hub.api.repository.*;
+import forum_hub.api.model.Autor;
+import forum_hub.api.model.Curso;
+import forum_hub.api.model.Estado;
+import forum_hub.api.model.Topico;
+import forum_hub.api.repository.AutorRepository;
+import forum_hub.api.repository.CursoRepository;
+import forum_hub.api.repository.EstadoRepository;
+import forum_hub.api.repository.TopicoRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
-public class DataLoader {
+import java.time.LocalDateTime;
 
-    @Bean
-    CommandLineRunner loadData(AutorRepository autorRepository, CursoRepository cursoRepository, EstadoRepository estadoRepository, TopicoRepository topicoRepository) {
-        return args -> {
-            Autor autor = new Autor(null, "Autor Exemplo", "autor@example.com");
-            autorRepository.save(autor);
+@Component
+public class DataLoader implements CommandLineRunner {
 
-            Curso curso = new Curso(null, "Curso Exemplo", "Descrição do Curso Exemplo");
-            cursoRepository.save(curso);
+    @Autowired
+    private AutorRepository autorRepository;
 
-            Estado estado = new Estado(null, "Aberto");
-            estadoRepository.save(estado);
+    @Autowired
+    private CursoRepository cursoRepository;
 
-            Topico topico = new Topico("Título do Tópico", "Mensagem do Tópico", estado, autor, curso);
-            topicoRepository.save(topico);
-        };
+    @Autowired
+    private EstadoRepository estadoRepository;
+
+    @Autowired
+    private TopicoRepository topicoRepository;
+
+    @Override
+    public void run(String... args) throws Exception {
+        Autor autor = new Autor("nome", "email@exemplo.com");
+        autorRepository.save(autor);
+
+        Curso curso = new Curso("Curso", "Descrição do Curso Exemplo");
+        cursoRepository.save(curso);
+
+        Estado estado = new Estado("Aberto");
+        estadoRepository.save(estado);
+
+        LocalDateTime dataAtual = LocalDateTime.now();
+
+        Topico topico = new Topico("Título do Tópico", "Mensagem do Tópico", estado, autor, curso);
+        topico.setDataCriacao(dataAtual); // Define a data de criação explicitamente
+        topicoRepository.save(topico);
     }
 }
