@@ -1,14 +1,18 @@
 package forum_hub.api.controller;
 
+import forum_hub.api.dto.AtualizacaoTopicoForm;
 import forum_hub.api.dto.TopicoResponseDTO;
 import forum_hub.api.model.Topico;
 import forum_hub.api.repository.TopicoRepository;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpStatus;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Optional;
@@ -60,5 +64,21 @@ public class TopicoController {
         return topicoRepository.findAll(pageable).stream()
                 .map(TopicoResponseDTO::new)
                 .collect(Collectors.toList());
+    }
+
+    @PutMapping("/{id}")
+    @Transactional
+    public TopicoResponseDTO atualizar(@PathVariable Long id, @RequestBody @Valid AtualizacaoTopicoForm form) {
+        Optional<Topico> optionalTopico = topicoRepository.findById(id);
+        if (optionalTopico.isEmpty()) {
+            throw new ResponseStatusException ( HttpStatus.NOT_FOUND, "Tópico não encontrado");
+        }
+
+        Topico topico = optionalTopico.get();
+        topico.setTitulo(form.getTitulo());
+        topico.setMensagem(form.getMensagem());
+        // Atualizar outros campos conforme necessário (estado, autor, curso, etc.)
+
+        return new TopicoResponseDTO(topicoRepository.save(topico));
     }
 }
