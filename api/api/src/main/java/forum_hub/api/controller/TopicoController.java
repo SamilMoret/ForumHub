@@ -81,4 +81,15 @@ public class TopicoController {
 
         return new TopicoResponseDTO(topicoRepository.save(topico));
     }
+
+    @DeleteMapping("/{id}")
+    @Transactional
+    public void deletar(@PathVariable Long id) {
+        Optional<Topico> topicoOptional = topicoRepository.findById(id);
+        if (topicoOptional.isPresent()) {
+            topicoRepository.deleteById(id);
+        } else {
+            throw new RuntimeException("Tópico não encontrado");
+        }
+    }
 }
