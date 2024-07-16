@@ -1,8 +1,4 @@
-package forum_hub.api.config;
+package forum_hub.api.usuario;
 
-import jakarta.validation.constraints.NotBlank;
-
-public record DadosAutenticacao(
-        @NotBlank String login,
-        @NotBlank String senha) {
+public record DadosAutenticacao(String login, String senha) {
 }

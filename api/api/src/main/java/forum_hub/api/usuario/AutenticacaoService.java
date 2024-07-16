@@ -1,6 +1,5 @@
-package forum_hub.api.service;
+package forum_hub.api.usuario;
 
-import forum_hub.api.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

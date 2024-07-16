@@ -1,6 +1,6 @@
 package forum_hub.api.controller;
 
-import forum_hub.api.dto.AtualizacaoTopicoForm;
+import forum_hub.api.model.AtualizacaoTopicoForm;
 import forum_hub.api.dto.TopicoResponseDTO;
 import forum_hub.api.model.Topico;
 import forum_hub.api.repository.TopicoRepository;
@@ -77,7 +77,6 @@ public class TopicoController {
         Topico topico = optionalTopico.get();
         topico.setTitulo(form.getTitulo());
         topico.setMensagem(form.getMensagem());
-        // Atualizar outros campos conforme necessário (estado, autor, curso, etc.)
 
         return new TopicoResponseDTO(topicoRepository.save(topico));
     }

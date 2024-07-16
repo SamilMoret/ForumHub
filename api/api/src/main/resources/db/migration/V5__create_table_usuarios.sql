@@ -1,6 +1,10 @@
-CREATE TABLE users (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(50) UNIQUE NOT NULL,
-    password VARCHAR(100) NOT NULL,
-    enabled BOOLEAN NOT NULL
+create table usuarios(
+
+    id bigint not null auto_increment,
+    login varchar(100) not null,
+    senha varchar(255) not null,
+
+
+    primary key(id)
+
 );

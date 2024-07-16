@@ -1,30 +1,42 @@
 package forum_hub.api.controller;
 
-import forum_hub.api.dto.LoginDTO;
+
+import forum_hub.api.security.DadosTokenJWT;
+import forum_hub.api.security.TokenService;
+import forum_hub.api.usuario.DadosAutenticacao;
+import forum_hub.api.usuario.Usuario;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import static org.apache.coyote.http11.Constants.a;
+
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/login")
 public class AuthenticationController {
 
     @Autowired
-    private AuthenticationManager authenticationManager;
+    private AuthenticationManager manager;
 
-    @PostMapping("/login")
-    public String login(@RequestBody LoginDTO loginDTO) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginDTO.getUsername(),
-                        loginDTO.getPassword()
-                )
-        );
+    @Autowired
+    private TokenService tokenService;
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
-        return "Autenticado com sucesso";
+
+    @PostMapping
+    public ResponseEntity efetuarLogin (@RequestBody @Valid DadosAutenticacao dados) {
+        var authenticationToken = new UsernamePasswordAuthenticationToken ( dados.login ( ), dados.senha ( ) );
+        var authentication = manager.authenticate ( authenticationToken );
+
+        var tokenJWT = tokenService.gerarToken ( (Usuario) authentication.getPrincipal ( ) );
+
+        return ResponseEntity.ok ( new DadosTokenJWT ( tokenJWT ) );
     }
+
 }
